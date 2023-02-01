@@ -1,8 +1,23 @@
-function getUserFromId(users, id) {
-  // filter by id and get first record
-  return users.find((element) => {
-    return element.id === id;
-  });
+
+function getDefaultLayoutFromMovies(movies) {
+
+  return movies.map(movie=>{
+    return {
+      id:movie.id,
+      row:20,
+      cols:6
+    }
+  })
 }
 
-export default getUserFromId;
+function getDefaultBlockedFromMovies(movies) {
+
+  return movies.map(movie=>{
+    return {
+      id:movie.id,
+      blockedIds:[]
+    }
+  })
+}
+
+export  {getDefaultLayoutFromMovies,getDefaultBlockedFromMovies};

@@ -12,11 +12,20 @@ export const selectMoviesData = createSelector(
   (movies) => movies.movies
 );
 
+export const selectLayoutData = createSelector(
+  [selectMovies],
+  (movies) => movies.layouts
+);
+
 export const selectMovieFromId =(id)=> createSelector(
   [selectMoviesData],
   (movies) => movies.filter((single)=>single.id==id)[0]
 );
 
+export const selectLayoutFromId =(id)=> createSelector(
+  [selectLayoutData],
+  (layouts) => layouts.filter(single=>single.id==id)[0]
+)
 
 export const selectError = createSelector(
   [selectMovies],

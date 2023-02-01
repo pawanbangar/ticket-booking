@@ -14,6 +14,6 @@ export const getCodeFromValue=(val)=>{
             temp=Math.floor((temp/26));
         }
     }
-    return code;
+    return code.split("").reverse().join("");
 }
 

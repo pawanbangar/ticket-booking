@@ -1,40 +1,46 @@
-import { Button, Container, Grid, styled, TextField, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Button, Grid, styled, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import Paper from '@mui/material/Paper'
+import { useDispatch, useSelector } from "react-redux";
+import Paper from "@mui/material/Paper";
 import { useParams } from "react-router-dom";
-import { selectMovieFromId } from "../redux/movies/moviesSelectors";
+import { selectLayoutFromId, selectMovieFromId } from "../redux/movies/moviesSelectors";
 import { getCodeFromValue } from "../utils/helpers";
+import { red } from "@mui/material/colors";
+import { updateLayoutStart } from "../redux/movies/moviesActions";
 const CustomizeRow = () => {
   const { id } = useParams();
   const movie = useSelector(selectMovieFromId(id));
-  const [row, setRow] = useState(20);
-  const [col, setColumn] = useState(6);
+  const layout =  useSelector(selectLayoutFromId(id));
+  const [row, setRow] = useState(layout.row);
+  const [col, setColumn] = useState(layout.cols);
+  const dispatch = useDispatch();
+  const saveLayout =()=>{
+    dispatch(updateLayoutStart({id:parseInt(id),row:parseInt(row),cols:parseInt(col)}));
+  }
+
   const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
     padding: theme.spacing(1),
-    textAlign: 'center',
+    textAlign: "center",
     color: theme.palette.text.secondary,
   }));
 
+  //   Single Row
+  const data = [];
 
-//   Single Row
-  const data=[];
-
-  for(let i=1;i<=row;i++)
-  {
-    data.push(<Grid key={i} item>
-        <Item>{i}</Item>
-      </Grid>);
+  for (let i = 1; i <= row; i++) {
+    data.push(
+      <Grid key={i} sx={{ m: 1 }} item>
+        <Item sx={{ p: 1 }}>{i}</Item>
+      </Grid>
+    );
   }
-  const columns = Array.from({length: col}, (v, k) => k+1);
-
+  const columns = Array.from({ length: col }, (v, k) => k + 1);
 
   return (
     <>
-      <Typography align="center" variant="h4" sx={{ mt: 2 }}>
+      <Typography align="center" variant="h4" sx={{ mt: 3 }}>
         {movie.title} ({movie.theatre})
       </Typography>
       <Typography align="center" variant="h6" sx={{ mt: 4 }}>
@@ -56,29 +62,48 @@ const CustomizeRow = () => {
           onChange={(e) => setColumn(e.target.value)}
         />
         <Button
-          color="success"
+        onClick={saveLayout}
+          color="secondary"
           variant="contained"
           sx={{
             mt: 1,
             ml: 1.5,
           }}
         >
-          {" "}
-          Customize Row{" "}
+          Save Setup{" "}
         </Button>
       </Typography>
-      <Container fixed sx={{ mt: 3 }}>
-        <Grid container spacing={1}>
-          {columns.map((val, index) => {
-            const code=getCodeFromValue(val);
-            return (
-            <Grid key={index} container item spacing={1}>
-                <Typography align="center" sx={{ mt:1.5,mr:1 }} variant="h6">{ code.split("").reverse().join("") }</Typography>
+
+      <Typography align="center" variant="h5" sx={{ mt: 4 }}>
+        Select Seats to be <span style={{ color: red[500] }}>Blocked</span>
+      </Typography>
+
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ ml: 2 }}
+      >
+        {columns.map((val, index) => {
+          const code = getCodeFromValue(val);
+          return (
+            <Grid
+              key={index}
+              item
+              spacing={1}
+              display="flex"
+              flexDirection="row"
+            >
+              <Typography align="center" sx={{ mt: 1.5, mr: 1.5 }} variant="h6">
+                {code}
+              </Typography>
               {data}{" "}
             </Grid>
-          )})}
-        </Grid>
-      </Container>
+          );
+        })}
+      </Grid>
     </>
   );
 };

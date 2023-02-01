@@ -18,8 +18,9 @@ function App() {
           <Loader />
         }
         ></React.Suspense>
+          <BrowserRouter>
        <ResponsiveAppBar/>
-       <BrowserRouter>
+     
        <RoutesPage/>
        </BrowserRouter>
        </PersistGate>

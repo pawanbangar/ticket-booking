@@ -1,7 +1,8 @@
 import { put, takeLatest } from "redux-saga/effects";
 import moviesActionTypes from "./moviesTypes";
-import { catchError, moviesFetched } from "./moviesSlice";
+import { catchError, moviesFetched, setBlockedSeats, setLayout } from "./moviesSlice";
 import * as data from "../../data/movies.json";
+import { getDefaultBlockedFromMovies, getDefaultLayoutFromMovies } from "./moviesUtil";
 
 function* fetchmoviesWorker(action) {
   try {
@@ -9,6 +10,16 @@ function* fetchmoviesWorker(action) {
     yield put(
       moviesFetched({
         movies:response.movies
+      })
+    );
+    yield put(
+      setLayout({
+        layouts:getDefaultLayoutFromMovies(response.movies)
+      })
+    );
+    yield put(
+      setBlockedSeats({
+        blockedSeats:getDefaultBlockedFromMovies(response.movies)
       })
     );
   } catch (error) {
