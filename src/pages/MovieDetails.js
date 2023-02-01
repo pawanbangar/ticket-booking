@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { selectMovieFromId } from "../redux/movies/moviesSelectors";
-import { CUSTOMIZE_ROW_PREFIX, TICKET_COST } from "../utils/constants";
+import { BOOK_TICKETS_PREFIX, CUSTOMIZE_ROW_PREFIX, TICKET_COST } from "../utils/constants";
 import Button from '@mui/material/Button'
 
 const MovieDetails = () =>{
@@ -18,7 +18,9 @@ const MovieDetails = () =>{
   </Typography>
 
   <Typography align="center" variant="h6" sx={{ mt:4 }}>
-   <Button color="primary" variant="contained" sx={{ mr:2 }}> Book Ticket </Button>
+   <Button onClick={()=>{
+    navigate(BOOK_TICKETS_PREFIX+id);
+   }} color="primary" variant="contained" sx={{ mr:2 }}> Book Ticket </Button>
    <Button onClick={()=>{
     navigate(CUSTOMIZE_ROW_PREFIX+id);
    }} color="success" variant="contained"> Customize Row </Button>

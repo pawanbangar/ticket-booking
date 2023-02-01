@@ -4,7 +4,7 @@ const initialMoviesState = {
   listLoading: false,
   movies:[],
   layouts:[],
-  blockedSeats:[],
+  booked:[],
   error:null
 };
 
@@ -37,6 +37,9 @@ export const moviesSlice = createSlice({
     setLayout: (state, action) => {
       state.layouts = action.payload.layouts;
     },
+    setBooked: (state, action) => {
+      state.booked = action.payload.booked;
+    },
 
     updateLayout: (state, action) => {
       state.layouts = state.layouts.map((layout) => {
@@ -45,15 +48,12 @@ export const moviesSlice = createSlice({
       });
     },
 
-    setBlockedSeats: (state, action) => {
-      state.blockedSeats = action.payload.blockedSeats;
-    },
-
-    updateBlockedSeat: (state,action) => {
-      state.blockedSeats = state.blockedSeats.map((seat) => {
-        if (action.payload.id == seat.id) return {id:seat.id,blockedIds:action.payload.blockedIds};
-        return seat;
-      });
+    updateBooked:(state,action) => {
+        state.booked = state.booked.map((single)=>{
+          if(action.payload.id==single.id)
+            return {id:single.id,booked:[...single.booked,...action.payload.booked]};
+          return single;
+        })
     }
   },
 });
@@ -64,5 +64,6 @@ export const {
   startCall,
   setLayout,
   updateLayout,
-  setBlockedSeats
+  updateBooked,
+  setBooked
 } = moviesSlice.actions;

@@ -1,21 +1,26 @@
-import { Button, Grid, styled, TextField, Typography } from "@mui/material";
+import { Button, Grid, rgbToHex, styled, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Paper from "@mui/material/Paper";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { selectLayoutFromId, selectMovieFromId } from "../redux/movies/moviesSelectors";
-import { getCodeFromValue } from "../utils/helpers";
+import { getCodeFromValue, getPosition } from "../utils/helpers";
 import { red } from "@mui/material/colors";
 import { updateLayoutStart } from "../redux/movies/moviesActions";
+import { MOVIE_DETAILS_PREFIX } from "../utils/constants";
 const CustomizeRow = () => {
   const { id } = useParams();
   const movie = useSelector(selectMovieFromId(id));
   const layout =  useSelector(selectLayoutFromId(id));
   const [row, setRow] = useState(layout.row);
   const [col, setColumn] = useState(layout.cols);
+  const [blockedPosition,setBlockedPosition] = useState(layout.blocked);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const saveLayout =()=>{
-    dispatch(updateLayoutStart({id:parseInt(id),row:parseInt(row),cols:parseInt(col)}));
+
+    dispatch(updateLayoutStart({id:parseInt(id),row:parseInt(row),cols:parseInt(col),blocked:blockedPosition}));
+    navigate(MOVIE_DETAILS_PREFIX+id);
   }
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -26,18 +31,22 @@ const CustomizeRow = () => {
     color: theme.palette.text.secondary,
   }));
 
-  //   Single Row
-  const data = [];
+  const calculateBlockedPosition = ({tmpCol,tmpRow}) =>{
 
-  for (let i = 1; i <= row; i++) {
-    data.push(
-      <Grid key={i} sx={{ m: 1 }} item>
-        <Item sx={{ p: 1 }}>{i}</Item>
-      </Grid>
-    );
+      const position= getPosition({col:tmpCol,row:tmpRow,rows:row});
+      if(!blockedPosition.includes(position))
+        setBlockedPosition([...blockedPosition,position]);
+      else{
+        const index =blockedPosition.indexOf(position);
+        let data = blockedPosition;
+        data.splice(index,1);
+        setBlockedPosition([...data]);
+      }
   }
-  const columns = Array.from({ length: col }, (v, k) => k + 1);
 
+
+  const columns = Array.from({ length: col }, (v, k) => k + 1);
+  const rows = Array.from({ length: row }, (v, k) => k + 1);
   return (
     <>
       <Typography align="center" variant="h4" sx={{ mt: 3 }}>
@@ -99,7 +108,25 @@ const CustomizeRow = () => {
               <Typography align="center" sx={{ mt: 1.5, mr: 1.5 }} variant="h6">
                 {code}
               </Typography>
-              {data}{" "}
+              {rows.map((v, i) => {
+                
+                const isBlocked = blockedPosition.includes( getPosition({row:v,col:val,rows:row}));
+            
+                return (
+                <Grid
+                  key={i}
+                  onClick={() =>
+                    calculateBlockedPosition({ tmpCol: val, tmpRow: v })
+                  }
+                  sx={{ m: 1 ,cursor:"pointer"}}
+                  item
+                >
+                  <Item sx={{ p: 1,background: isBlocked?red[500]:"#fff",color:isBlocked?"#fff":"#00000099" }}>
+                    {v}
+                  </Item>
+                </Grid>
+              );})
+  }
             </Grid>
           );
         })}

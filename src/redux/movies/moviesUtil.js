@@ -5,19 +5,18 @@ function getDefaultLayoutFromMovies(movies) {
     return {
       id:movie.id,
       row:20,
-      cols:6
+      cols:6,
+      blocked:[]
     }
   })
 }
-
-function getDefaultBlockedFromMovies(movies) {
+function getDefaultBookedFromMovies(movies) {
 
   return movies.map(movie=>{
     return {
       id:movie.id,
-      blockedIds:[]
+      booked:[]
     }
   })
 }
-
-export  {getDefaultLayoutFromMovies,getDefaultBlockedFromMovies};
+export  {getDefaultLayoutFromMovies,getDefaultBookedFromMovies};

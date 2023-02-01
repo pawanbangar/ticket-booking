@@ -17,9 +17,20 @@ export const selectLayoutData = createSelector(
   (movies) => movies.layouts
 );
 
+export const selectBookedData = createSelector(
+  [selectMovies],
+  (movies) => movies.booked
+);
+
+
 export const selectMovieFromId =(id)=> createSelector(
   [selectMoviesData],
   (movies) => movies.filter((single)=>single.id==id)[0]
+);
+
+export const selectBookedTickets =(id)=> createSelector(
+  [selectBookedData],
+  (booked) => booked.filter((single)=>single.id==id)[0]['booked']
 );
 
 export const selectLayoutFromId =(id)=> createSelector(

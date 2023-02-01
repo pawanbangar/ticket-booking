@@ -17,3 +17,6 @@ export const getCodeFromValue=(val)=>{
     return code.split("").reverse().join("");
 }
 
+export const getPosition = ({row,col,rows})=>{
+    return (parseInt(col)-1)*parseInt(rows)+parseInt(row);
+}
