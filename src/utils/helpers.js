@@ -20,3 +20,12 @@ export const getCodeFromValue=(val)=>{
 export const getPosition = ({row,col,rows})=>{
     return (parseInt(col)-1)*parseInt(rows)+parseInt(row);
 }
+
+export const getDefaultLayout = (id) =>{
+    return {
+        id,
+        row:20,
+      cols:6,
+      blocked:[]
+    }
+}

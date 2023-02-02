@@ -42,19 +42,41 @@ export const moviesSlice = createSlice({
     },
 
     updateLayout: (state, action) => {
-      state.layouts = state.layouts.map((layout) => {
-        if (action.payload.id == layout.id) return action.payload;
-        return layout;
-      });
+      if (
+        state.layouts.filter(
+          ((single) => single.id == action.payload.id)
+        ).length >0
+      ) {
+        state.layouts = state.layouts.map((layout) => {
+          if (action.payload.id == layout.id) return action.payload;
+          return layout;
+        });
+      } else {
+        state.layouts = [...state.layouts, action.payload];
+      }
     },
 
-    updateBooked:(state,action) => {
-        state.booked = state.booked.map((single)=>{
-          if(action.payload.id==single.id)
-            return {id:single.id,booked:[...single.booked,...action.payload.booked]};
+    updateBooked: (state, action) => {
+      if (
+        state.booked.filter(
+          ((single) => single.id == action.payload.id)
+        ).length > 0
+      ) {
+        state.booked = state.booked.map((single) => {
+          if (action.payload.id == single.id)
+            return {
+              id: single.id,
+              booked: [...single.booked, ...action.payload.booked],
+            };
           return single;
-        })
-    }
+        });
+      } else {
+        state.booked = [
+          ...state.booked,
+          { id: action.payload.id, booked: action.payload.booked },
+        ];
+      }
+    },
   },
 });
 
