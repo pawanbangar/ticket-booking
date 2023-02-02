@@ -31,12 +31,12 @@ export const selectMovieFromId =(id)=> createSelector(
 
 export const selectBookedTickets =(id)=> createSelector(
   [selectBookedData],
-  (booked) => booked.filter((single)=>single.id==id)?booked.filter((single)=>single.id==id)[0]['booked']:[]
+  (booked) => booked.filter((single)=>single.id==id).length>0?booked.filter((single)=>single.id==id)[0]['booked']:[]
 );
 
 export const selectLayoutFromId =(id)=> createSelector(
   [selectLayoutData],
-  (layouts) => layouts.filter(single=>single.id==id)?layouts.filter(single=>single.id==id)[0]:getDefaultLayout(id)
+  (layouts) => layouts.filter(single=>single.id==id).length>0?layouts.filter(single=>single.id==id)[0]:getDefaultLayout(id)
 )
 
 export const selectError = createSelector(

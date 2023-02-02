@@ -16,8 +16,8 @@ const HomePage = ()=>{
     return  <Box sx={{ flexGrow: 1 ,m: 2}}>
     <Grid container spacing={2}>
       {
-        movies.map(movie=> <Grid xs={6} md={4}>
-         <Movie movie={movie} />
+        movies.map(movie=> <Grid key={movie.id} xs={6} md={4}>
+         <Movie key={movie} movie={movie} />
         </Grid>)
 
       }

@@ -43,7 +43,7 @@ const BookTickets = () => {
           const code = getCodeFromValue(val);
           return (
             <Grid
-              key={index}
+              key={index*val}
               item
               spacing={1}
               display="flex"
@@ -54,7 +54,7 @@ const BookTickets = () => {
               </Typography>
               {rows.map((v, i) => 
 
-                <BookingMatrixRow i={i} id={id} setBookTickets={setBookTickets} layout={layout} bookTickets={bookTickets} tmpCol={val} tmpRow={v} />
+                <BookingMatrixRow key={i*id} i={i} id={id} setBookTickets={setBookTickets} layout={layout} bookTickets={bookTickets} tmpCol={val} tmpRow={v} />
               )}
             </Grid>
           );
