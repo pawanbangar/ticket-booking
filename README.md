@@ -26,4 +26,4 @@ To showcase how can we block and unblock seats for particular show
 ![](https://github.com/pawanbangar/ticket-booking/blob/master/screenshots/Screenshot%202024-10-13%20at%208.34.11%E2%80%AFPM.png)
 
 ### 7. Seat Selection with already booked seat
-![](https://github.com/pawanbangar/ticket-booking/blob/master/screenshots/Screenshot%202024-10-13%20at%208.34.11%E2%80%AFPM.png)
+![](https://github.com/pawanbangar/ticket-booking/blob/master/screenshots/Screenshot%202024-10-13%20at%208.34.22%E2%80%AFPM.png)
